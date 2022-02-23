@@ -1,12 +1,16 @@
-.admin {
+.admin-container {
   padding-left: 10px;
   padding-right: 10px;
+}
+.admin {
+  display: flex;
 }
 .admin-bio {
   border-radius: 10px;
   box-shadow: 0px 0px 5px lightgray;
   width: 25%;
   padding: 5px;
+  margin-right: 10px;
 }
 .admin-bio-data {
   display: flex;
@@ -28,4 +32,11 @@
 .admin-bio-title {
   font-size: 20px;
   font-weight: 600;
+}
+
+.admin-add {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 70%;
 }
