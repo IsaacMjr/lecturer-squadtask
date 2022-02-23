@@ -1,0 +1,17 @@
+.admin {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-evenly;
+}
+.admin-grpNo {
+  box-shadow: 0px 0px 5px lightgrey;
+  border-radius: 10px;
+  height: 20vh;
+  width: 25vw;
+  padding: 5px;
+}
+.admin-grNo-ct > div {
+  display: flex;
+}
