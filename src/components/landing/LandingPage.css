@@ -1,17 +1,31 @@
 .admin {
-  width: 95%;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: space-evenly;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-.admin-grpNo {
-  box-shadow: 0px 0px 5px lightgrey;
+.admin-bio {
   border-radius: 10px;
-  height: 20vh;
-  width: 25vw;
+  box-shadow: 0px 0px 5px lightgray;
+  width: 25%;
   padding: 5px;
 }
-.admin-grNo-ct > div {
+.admin-bio-data {
   display: flex;
+  justify-content: center;
+}
+.admin-bio-data > span {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.admin-bio-data > span > .MuiAvatar-root {
+  margin-left: auto;
+  margin-right: auto;
+}
+.admin-bio-data > span > p {
+  font-size: 25px;
+  font-weight: 500;
+}
+.admin-bio-title {
+  font-size: 20px;
+  font-weight: 600;
 }

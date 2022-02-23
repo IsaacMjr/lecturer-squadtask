@@ -41,7 +41,7 @@ function Auth() {
   const [showSide, setShowSide] = useState(false);
 
   const [year, setYear] = useState("");
-  // const [semester, setSemester] = useState("");
+  const [semester, setSemester] = useState("");
   const [course, setCourse] = useState("");
   const [courseunit, setCourseunit] = useState("");
   const [username, setUsername] = useState("");
@@ -64,7 +64,7 @@ function Auth() {
       .createUserWithEmailAndPassword(email, values.password)
       .then((user) => {
         user.user.updateProfile({
-          displayName: "admin",
+          displayName: username,
         });
         db.collection("lecturers")
           .doc(user.user.uid)
@@ -194,21 +194,41 @@ function Auth() {
                     </MenuItem>
                   </Select>
                 </FormControl>
-                <FormControl
-                  style={{ width: "120px", marginTop: "10px" }}
-                  className={classes.textField}
-                >
-                  <InputLabel id="select-year">lecture year </InputLabel>
-                  <Select
-                    labelId="select-year"
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
+                <div>
+                  <FormControl
+                    style={{ width: "120px", marginTop: "10px" }}
+                    className={classes.textField}
                   >
-                    <MenuItem value={1}> one</MenuItem>
-                    <MenuItem value={2}> two</MenuItem>
-                    <MenuItem value={3}> three</MenuItem>
-                  </Select>
-                </FormControl>
+                    <InputLabel id="select-year">lecture year </InputLabel>
+                    <Select
+                      labelId="select-year"
+                      value={year}
+                      onChange={(e) => setYear(e.target.value)}
+                    >
+                      <MenuItem value={1}> one</MenuItem>
+                      <MenuItem value={2}> two</MenuItem>
+                      <MenuItem value={3}> three</MenuItem>
+                    </Select>
+                  </FormControl>
+                  <FormControl
+                    style={{
+                      width: "120px",
+                      marginTop: "10px",
+                      marginLeft: "10px",
+                    }}
+                    className={classes.textField}
+                  >
+                    <InputLabel id="select-year">semester </InputLabel>
+                    <Select
+                      labelId="select-year"
+                      value={semester}
+                      onChange={(e) => setSemester(e.target.value)}
+                    >
+                      <MenuItem value={1}> one</MenuItem>
+                      <MenuItem value={2}> two</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
               </div>
               <Button
                 variant="contained"

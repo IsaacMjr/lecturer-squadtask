@@ -1,70 +1,48 @@
-import React, { useEffect, useState } from "react";
-import "./LandingPage.css";
+import { Avatar } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import { db } from "../../squad-config";
-import { CircularProgress } from "@mui/material";
-import DisplayStudents from "../displayStudents/DisplayStudents";
+import "./LandingPage.css";
 
-function Admin() {
-  const [users, setUsers] = useState([]);
-  const [group, setGroup] = useState([
-    {
-      id: "",
-      groupName: "",
-      groupMembers: [],
-    },
-  ]);
+function LandingPage({ user }) {
+  const [userDetails, setUserDetails] = useState([]);
   useEffect(() => {
-    db.collection("users").onSnapshot((snapshot) =>
-      setUsers(snapshot.docs.map((doc) => doc.data()))
-    );
-
-    db.collection("groups").onSnapshot((snapshot) => {
-      setGroup(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          groupName: doc.data().groupName,
-          groupMembers: doc.data().groupMembers,
-        }))
-      );
-    });
+    db.collection("lecturers")
+      .doc(user.uid)
+      .onSnapshot((snapshot) => {
+        setUserDetails(snapshot.data());
+      });
   }, []);
 
   return (
-    <div>
-      <div className="admin">
-        {/* <div className="admin-grpNo">
-        {groups.length === 0 ? (
-          <CircularProgress />
+    <div className="admin">
+      <div className="admin-bio">
+        <div className="admin-bio-data">
+          <span>
+            <Avatar />
+            {userDetails ? <p>{userDetails.username}</p> : <p>loading</p>}
+          </span>
+        </div>
+        <p className="admin-bio-title">course</p>
+        {userDetails ? (
+          userDetails.course.map((course, id) => <p key={id}>{course}</p>)
         ) : (
-          <div className="admin-grNo-ct"> 
-            <h3> number of groups</h3>
-            <div>
-              <p>{groups.length}</p>&nbsp;
-              <p> groups</p>
-            </div>
-          </div>
+          <p> loading</p>
         )}
-      </div> */}
-        <div className="admin-grpNo">
-          {users.length === 0 ? (
-            <CircularProgress />
-          ) : (
-            <div className="admin-grNo-ct">
-              <h3> number of students</h3>
-              <div>
-                <p>{users.length}</p>&nbsp;
-                <p> users</p>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="admin-grpNo">
-          <h2> number of grouped students</h2>
-        </div>
+        <p className="admin-bio-title">course units</p>
+        {userDetails ? (
+          userDetails.courseunit.map((course, id) => <p key={id}>{course}</p>)
+        ) : (
+          <p> loading</p>
+        )}
+        <p className="admin-bio-title">lecture years</p>
+        {userDetails ? (
+          userDetails.lectureYear.map((course, id) => <p key={id}>{course}</p>)
+        ) : (
+          <p> loading</p>
+        )}
       </div>
-      {group ? <DisplayStudents groups={group} /> : <p>loading</p>}
     </div>
   );
 }
 
-export default Admin;
+export default LandingPage;

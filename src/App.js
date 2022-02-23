@@ -39,7 +39,7 @@ function App() {
                 </>
               }
             />
-            <Route path="/" element={<LandingPage />} />
+            <Route path="/" element={<LandingPage user={user} />} />
           </Routes>
         )}
       </Router>
