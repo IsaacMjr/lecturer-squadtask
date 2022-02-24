@@ -2,9 +2,9 @@
   border-radius: 5px;
   padding: 5px;
   box-shadow: 0px 0px 5px lightgrey;
-  height: 20vh;
+  min-height: 20vh;
   width: 19vw;
 }
-.grpMem > h2 {
+.grpMain > h2 {
   text-align: center;
 }

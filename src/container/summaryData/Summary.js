@@ -18,7 +18,7 @@ function Summary({ courseunit }) {
       db.collection("lecturers")
         .doc(auth.currentUser.uid)
         .collection("groups")
-        .where("groupcourseunit", "==", courseunit[0].courseunit)
+        .where("groupCourseunit", "==", courseunit[0].courseunit)
         .onSnapshot((snapshot) => {
           setNumberOfGroups(snapshot.docs.map((doc) => doc.data()));
         });
@@ -30,14 +30,23 @@ function Summary({ courseunit }) {
   const createGroup = () => {
     for (let i = 0; i < testNumberOfGroups; i++) {
       const randomId = Math.floor(Math.random() * 1000);
-      db.collection("test")
-        .doc(`group-${randomId.toString()}`)
+      db.collection("lecturers")
+        .doc(auth.currentUser.uid)
+        .collection("groups")
+        .doc(`group-${randomId}`)
         .set({
-          groupname: "hello",
+          groupName: `group-${randomId}`,
+          groupCourseunit: courseunit[0].courseunit,
+          groupLogo: "",
+          groupId: `group-${randomId}`,
+          groupNumber: numberPart,
+          groupMembers: [],
         })
         .then(() => {
+          alert(`${testNumberOfGroups} group(s) created`);
           setNumberPart(0);
-        });
+        })
+        .catch((error) => alert(error.message));
 
       //   testArr.push(`group${randomId}`);
     }

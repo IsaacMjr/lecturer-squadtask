@@ -1,10 +1,29 @@
 import React from "react";
+
 import "./GroupMembers.css";
 
-function GroupMembers() {
+function GroupMembers({ group, groupInfo }) {
   return (
     <div className="grpMem">
-      <h2> group members</h2>
+      {groupInfo && group ? (
+        groupInfo
+          .filter((info) => info.groupId == group)
+          .map((info, id) => {
+            const members = info.groupMembers;
+            return (
+              <div className="grpMain" key={id}>
+                <h2> {info.groupId} &nbsp;members</h2>
+                {members.map((member, id) => (
+                  <p key={id}>{member.memberName}</p>
+                ))}
+              </div>
+            );
+          })
+      ) : (
+        <div className="grpErr">
+          <h4> loading</h4>
+        </div>
+      )}
     </div>
   );
 }

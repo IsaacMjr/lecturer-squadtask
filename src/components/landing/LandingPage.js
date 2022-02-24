@@ -13,11 +13,23 @@ import GroupMembers from "../groupMembers/GroupMembers";
 function LandingPage({ user }) {
   const [userDetails, setUserDetails] = useState([]);
   const [courseunit, setCourseUnit] = useState([]);
+  const [groupInfo, setGroupInfo] = useState([]);
+
+  // group props
+  const [group, setGroup] = useState("");
+
+  // fetch data from the groups
   useEffect(() => {
     db.collection("lecturers")
       .doc(user.uid)
       .onSnapshot((snapshot) => {
         setUserDetails(snapshot.data());
+      });
+    db.collection("lecturers")
+      .doc(user.uid)
+      .collection("groups")
+      .onSnapshot((snapshot) => {
+        setGroupInfo(snapshot.docs.map((doc) => doc.data()));
       });
   }, []);
 
@@ -101,10 +113,14 @@ function LandingPage({ user }) {
           )}
         </div>
         <div>
-          <Announcement />
+          <Announcement
+            groupInfo={groupInfo}
+            group={group}
+            setGroup={setGroup}
+          />
         </div>
         <div>
-          <GroupMembers />
+          <GroupMembers group={group} groupInfo={groupInfo} />
         </div>
       </div>
       <Summary courseunit={courseunit} />
