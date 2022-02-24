@@ -1,0 +1,8 @@
+.announce-admin {
+  width: 50vw;
+  height: 30vh;
+  box-shadow: 0px 0px 5px lightgray;
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 10px;
+}

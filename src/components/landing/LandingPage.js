@@ -8,9 +8,11 @@ import { Avatar, Tooltip } from "@mui/material";
 import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Summary from "../../container/summaryData/Summary";
+import GroupMembers from "../groupMembers/GroupMembers";
 
 function LandingPage({ user }) {
   const [userDetails, setUserDetails] = useState([]);
+  const [courseunit, setCourseUnit] = useState([]);
   useEffect(() => {
     db.collection("lecturers")
       .doc(user.uid)
@@ -18,6 +20,16 @@ function LandingPage({ user }) {
         setUserDetails(snapshot.data());
       });
   }, []);
+
+  // experiment
+  const fetchCuStudents = (courseunit) => {
+    db.collection("users")
+      .where("courseunit", "==", courseunit)
+      .onSnapshot((snapshot) => {
+        setCourseUnit(snapshot.docs.map((doc) => doc.data()));
+      });
+  };
+  // userDetails.courseunit.map((unit, id) => console.log(unit));
 
   return (
     <div className="admin-container">
@@ -57,7 +69,15 @@ function LandingPage({ user }) {
             </Tooltip>
           </span>
           {userDetails.courseunit ? (
-            userDetails.courseunit.map((course, id) => <p key={id}>{course}</p>)
+            userDetails.courseunit.map((courseNt, id) => (
+              <div key={id} className="admin-C-units">
+                {courseNt}
+                <button onClick={() => fetchCuStudents(courseNt)}>
+                  {" "}
+                  select
+                </button>
+              </div>
+            ))
           ) : (
             <p> loading</p>
           )}
@@ -83,8 +103,11 @@ function LandingPage({ user }) {
         <div>
           <Announcement />
         </div>
+        <div>
+          <GroupMembers />
+        </div>
       </div>
-      <Summary />
+      <Summary courseunit={courseunit} />
     </div>
   );
 }

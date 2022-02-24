@@ -1,26 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Summary.css";
+import { db, auth } from "../../squad-config";
 
 // material-ui components
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 
-function Summary() {
-  const [numberPart, setNumberPart] = useState(0);
+function Summary({ courseunit }) {
+  const [numberPart, setNumberPart] = useState(0); //number of participants per group
   // testing number of groups
-  const testNumberOfGroups = Math.floor(20 / numberPart);
+  const testNumberOfGroups = Math.floor(courseunit.length / numberPart);
+
+  //   fetch number of groups in a courseunit
+  const [numberOfGroups, setNumberOfGroups] = useState([]);
+  useEffect(() => {
+    if (courseunit.length !== 0) {
+      db.collection("lecturers")
+        .doc(auth.currentUser.uid)
+        .collection("groups")
+        .where("groupcourseunit", "==", courseunit[0].courseunit)
+        .onSnapshot((snapshot) => {
+          setNumberOfGroups(snapshot.docs.map((doc) => doc.data()));
+        });
+    }
+  }, [courseunit]);
+
+  //   function to create groups
+
+  const createGroup = () => {
+    for (let i = 0; i < testNumberOfGroups; i++) {
+      const randomId = Math.floor(Math.random() * 1000);
+      db.collection("test")
+        .doc(`group-${randomId.toString()}`)
+        .set({
+          groupname: "hello",
+        })
+        .then(() => {
+          setNumberPart(0);
+        });
+
+      //   testArr.push(`group${randomId}`);
+    }
+  };
+
   return (
     <div className="sum">
-      <h1> create groups manually</h1>
+      <h2> create groups manually</h2>
       <div>
-        <p> number of student doing research methodology</p>
-        <h3>5</h3>
+        {courseunit.courseunit ? (
+          <p> number of student doing {courseunit[0].courseunit}</p>
+        ) : (
+          <p> number of students doing selected courseunit</p>
+        )}
+        {courseunit ? <h3>{courseunit.length}</h3> : <h3>0</h3>}
       </div>
       <div>
-        <p> number of groups doing research methodology</p>
-        <h3>5</h3>
+        {courseunit.courseunit ? (
+          <p> number of groups doing {courseunit[0].courseunit}</p>
+        ) : (
+          <p> number of groups doing selected courseunit</p>
+        )}
+
+        {numberOfGroups.length === 0 ? (
+          <h3>0</h3>
+        ) : (
+          <h3>{numberOfGroups.length}</h3>
+        )}
       </div>
-      <h2>manually create groups</h2>
+      <h3>assign number of students per group</h3>
       <div>
         <p>number of participants per group</p>
         <TextField
@@ -30,11 +77,16 @@ function Summary() {
           onChange={(e) => setNumberPart(e.target.value)}
         />
       </div>
-      <div>
+      <div className="sum-grpNum">
         possible number of groups &nbsp;{" "}
         {numberPart <= 0 ? <p>0</p> : testNumberOfGroups}
       </div>
-      <Button variant="contained" color="primary">
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={createGroup}
+        disabled={!numberPart || numberPart <= 0}
+      >
         {" "}
         create groups
       </Button>

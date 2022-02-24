@@ -40,3 +40,13 @@
   align-items: center;
   width: 70%;
 }
+.admin-C-units {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3px;
+  width: 70%;
+}
+.admin-C-units > button {
+  border: none;
+  border-radius: 5px;
+}
