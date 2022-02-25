@@ -9,6 +9,7 @@ import { IconButton } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Summary from "../../container/summaryData/Summary";
 import GroupMembers from "../groupMembers/GroupMembers";
+import Complaints from "../complaints/Complaints";
 
 function LandingPage({ user }) {
   const [userDetails, setUserDetails] = useState([]);
@@ -123,7 +124,10 @@ function LandingPage({ user }) {
           <GroupMembers group={group} groupInfo={groupInfo} />
         </div>
       </div>
-      <Summary courseunit={courseunit} />
+      <div className="admin-botm">
+        <Summary courseunit={courseunit} />
+        <Complaints />
+      </div>
     </div>
   );
 }
