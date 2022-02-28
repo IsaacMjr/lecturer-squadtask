@@ -21,11 +21,13 @@ function LandingPage({ user }) {
 
   // fetch data from the groups
   useEffect(() => {
-    db.collection("lecturers")
-      .doc(user.uid)
-      .onSnapshot((snapshot) => {
-        setUserDetails(snapshot.data());
-      });
+    if (user.uid) {
+      db.collection("lecturers")
+        .doc(user.uid)
+        .onSnapshot((snapshot) => {
+          setUserDetails(snapshot.data());
+        });
+    }
     db.collection("lecturers")
       .doc(user.uid)
       .collection("groups")
@@ -42,7 +44,6 @@ function LandingPage({ user }) {
         setCourseUnit(snapshot.docs.map((doc) => doc.data()));
       });
   };
-  // userDetails.courseunit.map((unit, id) => console.log(unit));
 
   return (
     <div className="admin-container">

@@ -30,17 +30,18 @@ function Summary({ courseunit }) {
   const createGroup = () => {
     for (let i = 0; i < testNumberOfGroups; i++) {
       const randomId = Math.floor(Math.random() * 1000);
-      db.collection("lecturers")
-        .doc(auth.currentUser.uid)
-        .collection("groups")
+      db.collection("groups")
         .doc(`group-${randomId}`)
         .set({
           groupName: `group-${randomId}`,
           groupCourseunit: courseunit[0].courseunit,
-          groupLogo: "",
+          groupLogo:
+            "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
           groupId: `group-${randomId}`,
           groupNumber: numberPart,
           groupMembers: [],
+          memberTraits: [],
+          createdBy: auth.currentUser.uid,
         })
         .then(() => {
           alert(`${testNumberOfGroups} group(s) created`);
