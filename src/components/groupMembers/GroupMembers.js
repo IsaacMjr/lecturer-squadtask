@@ -12,16 +12,20 @@ function GroupMembers({ group, groupInfo }) {
             const members = info.groupMembers;
             return (
               <div className="grpMain" key={id}>
-                <h2> {info.groupId} &nbsp;members</h2>
-                {members.map((member, id) => (
-                  <p key={id}>{member.memberName}</p>
-                ))}
+                <h4> {info.groupId} &nbsp;members</h4>
+                {members ? (
+                  members.map((member, id) => (
+                    <p key={id}>{member.memberName}</p>
+                  ))
+                ) : (
+                  <p> no group member yet</p>
+                )}
               </div>
             );
           })
       ) : (
         <div className="grpErr">
-          <h4> loading</h4>
+          <h4> select from menu to display participants</h4>
         </div>
       )}
     </div>

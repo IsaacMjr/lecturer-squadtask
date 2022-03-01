@@ -5,7 +5,7 @@ import "./Announcement.css";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 import Communicate from "../../container/communicate/Communicate";
 
-function Announcement({ groupInfo, group, setGroup }) {
+function Announcement({ groupInfo, group, setGroup, selectedUnit }) {
   return (
     <div className="announce-admin">
       <FormControl style={{ width: "200px" }} variant="standard" size="small">
@@ -28,6 +28,7 @@ function Announcement({ groupInfo, group, setGroup }) {
           )}
         </Select>
       </FormControl>
+      {selectedUnit ? <h2>{selectedUnit}</h2> : <h2> no selected unit yet</h2>}
       <Communicate />
     </div>
   );

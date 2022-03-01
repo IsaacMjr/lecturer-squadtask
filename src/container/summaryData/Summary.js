@@ -6,7 +6,7 @@ import { db, auth } from "../../squad-config";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 
-function Summary({ courseunit }) {
+function Summary({ courseunit, selectedUnit }) {
   const [numberPart, setNumberPart] = useState(0); //number of participants per group
   // testing number of groups
   const testNumberOfGroups = Math.floor(courseunit.length / numberPart);
@@ -14,11 +14,10 @@ function Summary({ courseunit }) {
   //   fetch number of groups in a courseunit
   const [numberOfGroups, setNumberOfGroups] = useState([]);
   useEffect(() => {
-    if (courseunit.length !== 0) {
-      db.collection("lecturers")
-        .doc(auth.currentUser.uid)
-        .collection("groups")
-        .where("groupCourseunit", "==", courseunit[0].courseunit)
+    if (selectedUnit) {
+      db.collection("groups")
+        .where("createdBy", "==", auth.currentUser.uid)
+        .where("groupCourseUnit", "==", selectedUnit)
         .onSnapshot((snapshot) => {
           setNumberOfGroups(snapshot.docs.map((doc) => doc.data()));
         });
@@ -34,7 +33,7 @@ function Summary({ courseunit }) {
         .doc(`group-${randomId}`)
         .set({
           groupName: `group-${randomId}`,
-          groupCourseunit: courseunit[0].courseunit,
+          groupCourseUnit: courseunit[0].courseunit,
           groupLogo:
             "https://reactnativecode.com/wp-content/uploads/2018/02/Default_Image_Thumbnail.png",
           groupId: `group-${randomId}`,
@@ -48,11 +47,9 @@ function Summary({ courseunit }) {
           setNumberPart(0);
         })
         .catch((error) => alert(error.message));
-
-      //   testArr.push(`group${randomId}`);
     }
   };
-
+  console.log(courseunit);
   return (
     <div className="sum">
       <h2> create groups manually</h2>

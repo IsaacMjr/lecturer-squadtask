@@ -15,12 +15,13 @@ function LandingPage({ user }) {
   const [userDetails, setUserDetails] = useState([]);
   const [courseunit, setCourseUnit] = useState([]);
   const [groupInfo, setGroupInfo] = useState([]);
+  const [selectedUnit, setSelectedUnit] = useState("");
 
   // group props
   const [group, setGroup] = useState("");
 
-  // fetch data from the groups
   useEffect(() => {
+    // getting information of lecturer
     if (user.uid) {
       db.collection("lecturers")
         .doc(user.uid)
@@ -28,23 +29,25 @@ function LandingPage({ user }) {
           setUserDetails(snapshot.data());
         });
     }
-    db.collection("lecturers")
-      .doc(user.uid)
-      .collection("groups")
-      .onSnapshot((snapshot) => {
-        setGroupInfo(snapshot.docs.map((doc) => doc.data()));
-      });
   }, []);
 
-  // experiment
+  // fetching the details of courseunit and groups of particular courseunit
   const fetchCuStudents = (courseunit) => {
     db.collection("users")
       .where("courseunit", "==", courseunit)
       .onSnapshot((snapshot) => {
         setCourseUnit(snapshot.docs.map((doc) => doc.data()));
       });
+    db.collection("groups")
+      .where("createdBy", "==", user.uid)
+      .where("groupCourseUnit", "==", courseunit)
+      .onSnapshot((snapshot) => {
+        setGroupInfo(snapshot.docs.map((doc) => doc.data()));
+      });
+    setSelectedUnit(courseunit);
   };
 
+  // console.log(groupInfo);
   return (
     <div className="admin-container">
       <div className="admin">
@@ -119,14 +122,19 @@ function LandingPage({ user }) {
             groupInfo={groupInfo}
             group={group}
             setGroup={setGroup}
+            selectedUnit={selectedUnit}
           />
         </div>
         <div>
-          <GroupMembers group={group} groupInfo={groupInfo} />
+          <GroupMembers
+            group={group}
+            groupInfo={groupInfo}
+            selectedUnit={selectedUnit}
+          />
         </div>
       </div>
       <div className="admin-botm">
-        <Summary courseunit={courseunit} />
+        <Summary courseunit={courseunit} selectedUnit={selectedUnit} />
         <Complaints />
       </div>
     </div>
